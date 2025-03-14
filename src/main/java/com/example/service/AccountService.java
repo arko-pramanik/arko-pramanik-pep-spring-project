@@ -16,7 +16,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public Account registerAccount(Account account){
+    public Account addAccount(Account account){
         if (account.getUsername().isBlank()){
             return null;
         }
@@ -30,7 +30,7 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public Account loginAccount(Account account){
+    public Account getAccount(Account account){
         Account loggedinAccount = accountRepository.findAccountByUsernameAndPassword(account.getUsername(), account.getPassword());
         if (loggedinAccount == null){
             return null;

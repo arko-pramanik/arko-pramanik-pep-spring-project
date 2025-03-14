@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.service.AccountService;
+import com.example.service.MessageService;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -22,14 +24,16 @@ import com.example.service.AccountService;
 public class SocialMediaController {
 
     private AccountService accountService;
+    private MessageService messageService;
 
-    public SocialMediaController(AccountService accountService){
+    public SocialMediaController(AccountService accountService, MessageService messageService){
         this.accountService = accountService;
+        this.messageService = messageService;
     }
     
     @PostMapping("register")
     public ResponseEntity<Account> registerUser(@RequestBody Account account){
-        Account newAccount = accountService.registerAccount(account);
+        Account newAccount = accountService.addAccount(account);
         if (newAccount == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -42,11 +46,22 @@ public class SocialMediaController {
 
     @PostMapping("login")
     public ResponseEntity<Account> loginUser(@RequestBody Account account){
-        Account loggedinAccount = accountService.loginAccount(account);
+        Account loggedinAccount = accountService.getAccount(account);
         if (loggedinAccount == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else{
             return ResponseEntity.status(HttpStatus.OK).body(loggedinAccount);
         }
     }
+
+    @PostMapping("messages")
+    public ResponseEntity<Message> createMessage(@RequestBody Message message){
+        Message newMessage = messageService.addMessage(message);
+        if (newMessage == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else{
+            return ResponseEntity.status(HttpStatus.OK).body(newMessage);
+        }
+    }
+
 }
