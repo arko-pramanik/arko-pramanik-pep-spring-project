@@ -1,8 +1,11 @@
 package com.example.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,6 +65,18 @@ public class SocialMediaController {
         } else{
             return ResponseEntity.status(HttpStatus.OK).body(newMessage);
         }
+    }
+
+    @GetMapping("messages")
+    public ResponseEntity<List<Message>> retrieveMessages(){
+        List<Message> allMessages = messageService.getAllMssages();
+        return ResponseEntity.status(HttpStatus.OK).body(allMessages);
+    } 
+
+    @GetMapping("messages/{messageId}")
+    public ResponseEntity<Message> retrieveMessageById(@PathVariable int messageId){
+        Message message = messageService.getMessageById(messageId);
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
 }
