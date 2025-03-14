@@ -56,4 +56,20 @@ public class MessageService {
         return 1;
     }
 
+    public int updateMessageById(int messageId, Message message){
+        Optional<Message> foundMessage = messageRepository.findById(messageId);
+        if (foundMessage.isEmpty()){
+            return 0;
+        }
+        if (message.getMessageText().isBlank()){
+            return 0;
+        }
+        if (message.getMessageText().length() > 255){
+            return 0;
+        }
+        Message updatedMessage = foundMessage.get();
+        updatedMessage.setMessageText(message.getMessageText());
+        return 1;
+    }
+
 }
